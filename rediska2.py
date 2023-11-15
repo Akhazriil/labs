@@ -17,7 +17,7 @@ class Names:
 
 class RedisServer:
     def __init__(self):
-        self.connection = Redis(host='192.168.112.103', password='student')
+        self.connection = Redis(host='127.0.0.1', password='student')
 
     def post(self, data):
         referee = data.__dict__['name']
@@ -25,11 +25,7 @@ class RedisServer:
         points = data.__dict__['sportsman_points']
         key = f'22303-Kuzmin-{referee}-{sportsman}'
         try:
-            current_points = self.connection.get(key)
-            if current_points is not None:
-                current_points = int(current_points.decode('utf-8'))
-                points = current_points + int(points)
-            self.connection.set(key, str(points), ex=20)
+            self.connection.set(key, str(points), ex=20)  # Set the points directly, overwriting existing value
         except ConnectionError:
             print("Ошибка подключения")
             return 400
