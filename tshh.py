@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter.ttk import *
 import copy
 
-client = MongoClient('mongodb://192.168.112.103')
+client = MongoClient("localhost", 27017)
 db = client['22303']
 
 collection = db['rkuzmin']
