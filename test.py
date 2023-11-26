@@ -1,5 +1,9 @@
-from pymongo import MongoClient
-
-client = MongoClient("localhost", 27017)
-database = client.list_database_names()
-print(database)
+template_game = {'category': '',
+                 'date': '',
+                 'score': '',
+                 'rules_violations': [
+                     {'card': '', 'name': '', 'minute': '', 'reason': ''}],
+                 'goals': [{'name': '', 'position': '', 'minute': '', 'pass': ''}],
+                 'penalties': [{'name': '', 'position': '', 'minute': '', 'pass': ''}],
+                 'shots_number_goals': [{'name': '', 'position': '', 'minute': '', 'pass': ''}]
+                 }
