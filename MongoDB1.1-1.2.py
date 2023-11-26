@@ -1,6 +1,3 @@
-import json
-from pprint import pprint
-
 from pymongo import MongoClient
 import tkinter as tk
 from tkinter import ttk
@@ -43,8 +40,8 @@ template_game = {'category': '',
                  'shots_number_goals': [{'name': '', 'position': '', 'minute': '', 'pass': ''}]
                  }
 template_team = {'category': '', 'name': '', 'city': '', 'coach_name': '',
-             'players': [{'name': '', 'position': ''}],
-             'reserve_players': []}
+                 'players': [{'name': '', 'position': ''}],
+                 'reserve_players': []}
 
 
 class MongoDataB:
@@ -192,7 +189,7 @@ class MongoWindow:
             date = self.date_entry.get()
             field = key.split('.')
             new_value = properties.split('.')
-                # good_game[field[0]] = new_value
+            # good_game[field[0]] = new_value
             if field[0] in ['rules_violations', 'goals', 'penalties', 'shots_number_goals']:
                 for i, j in zip(field[1:], new_value):
                     template_game[i] = j
@@ -225,7 +222,6 @@ class MongoWindow:
                 good_team[field[1]] = new_value[1]
                 self.mongo_server.collection.update_one({"category": "team", "name": new_value[0]},
                                                         {"$set": good_team}, upsert=True)
-
 
     def show(self):
         current_document = ""
