@@ -75,13 +75,6 @@ class AggregationApp:
             self.documents_text.config(state="disabled")
 
 
-# [
-#     {"$match": {"date": "01.01.2023"}},
-#     {"$unwind": "$goals"},
-#     {"$group": {"_id": "$_id", "total_goals": {"$sum": 1}}},
-#     {"$project": {"_id": 0, "total_goals": 1}}
-# ]
-
 root = Tk()
 aggregation_app = AggregationApp(root)
 root.geometry('800x600')
