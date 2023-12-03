@@ -20,42 +20,33 @@ class MongoDataB:
         # Добавление тестовых данных в коллекции
         self.football_collection.insert_one(
             {'category': 'team', 'name': 'Spart', 'city': 'Petrozavodsk', 'coach_name': 'Leva D.S.',
-             'players': [{'name': 'Petrov V.V.', 'position': '1'},
-                         {'name': 'Ivanov V.V.', 'position': '2'},
-                         {'name': 'Tervoch K.K.', 'position': '3'},
-                         {'name': 'Semenov V.M.', 'position': '4'},
-                         {'name': 'Laitenen H.D.', 'position': '5'},
-                         {'name': 'Sergeev I.I.', 'position': '6'},
-                         {'name': 'Zubkov I.L.', 'position': '7'},
-                         {'name': 'Lekander O.N.', 'position': '8'},
-                         {'name': 'Gromov V.A.', 'position': '9'},
-                         {'name': 'Tyrin S.S.', 'position': '10'},
-                         {'name': 'Jorjev K.A.', 'position': '11'}],
+             'players': [{'name': 'Petrov V.V.', 'position': 1},
+                         {'name': 'Ivanov V.V.', 'position': 2},
+                         {'name': 'Tervoch K.K.', 'position': 3},
+                         {'name': 'Semenov V.M.', 'position': 4},
+                         {'name': 'Laitenen H.D.', 'position': 5},
+                         {'name': 'Sergeev I.I.', 'position': 6},
+                         {'name': 'Zubkov I.L.', 'position': 7},
+                         {'name': 'Lekander O.N.', 'position': 8},
+                         {'name': 'Gromov V.A.', 'position': 9},
+                         {'name': 'Tyrin S.S.', 'position': 10},
+                         {'name': 'Jorjev K.A.', 'position': 11}],
              'reserve_players': ['Chetkov V.V.', 'Kuznetsov V.V.', 'Peshkin V.V.', 'Venchik V.V.', 'Semchik V.V.']})
         self.game_collection.insert_one({'category': 'game',
                                          'date': '01.01.2023',
-                                         'test': '2',
                                          'score': '0:2',
                                          'rules_violations': [
-                                             {'card': 'yellow', 'name': 'Andreev S. M.', 'minute': '12',
-                                              'reason': 'Deliberate hand play'}],
-                                         'goals': [{'name': 'Semenov V.M.', 'position': '4', 'minute': '19',
-                                                    'pass': 'accurate pass'},
-                                                   {'name': 'Tervoch K.K.', 'position': '3', 'minute': '5',
-                                                    'pass': 'short pass'}],
-                                         'penalties': [{'name': 'Sergeev I.I.', 'position': '6', 'minute': '6',
-                                                        'pass': 'wall pass'}],
-                                         'shots_number_goals': [
-                                             {'name': 'Semenov V.M.', 'position': '4', 'minute': '19',
-                                              'pass': 'accurate pass'},
-                                             {'name': 'Tyrin S.S.', 'position': '10', 'minute': '16',
-                                              'pass': 'chip pass'},
-                                             {'name': 'Tervoch K.K.', 'position': '3', 'minute': '5',
-                                              'pass': 'short pass'}]
+                                             {'card': 'yellow', 'name': 'Andreev S. M.', 'minute': 12, 'reason': 'Deliberate hand play'}],
+                                         'goals': [{'name': 'Semenov V.M.', 'position': 4, 'minute': 19, 'pass': 'accurate pass'},
+                                                   {'name': 'Tervoch K.K.', 'position': 3, 'minute': 5, 'pass': 'short pass'}],
+                                         'penalties': [{'name': 'Sergeev I.I.', 'position': 6, 'minute': 6, 'pass': 'wall pass'}],
+                                         'shots_number_goals': [{'name': 'Semenov V.M.', 'position': 4, 'minute': 19, 'pass': 'accurate pass'},
+                                                                {'name': 'Tyrin S.S.', 'position': 10, 'minute': 16, 'pass': 'chip pass'},
+                                                                {'name': 'Tervoch K.K.', 'position': 3, 'minute': 5, 'pass': 'short pass'}]
                                          })
 
 
-class SearchApp:
+class MongoWindow:
     def __init__(self, master):
         self.master = master
         self.master.title("Лабораторная по Монго №1.3")
@@ -114,10 +105,11 @@ class SearchApp:
         self.documents_text.config(state="disabled")
 
     def perform_search(self):
-        key = self.key_entry.get()
+        keys = self.key_entry.get().split('.')
+        key = keys[-1]
         comparison = self.comparison_var.get()
 
-        value = self.value_entry.get()
+        value = int(self.value_entry.get())
 
         if comparison == '>':
             query = {key: {'$gt': value}}
@@ -133,13 +125,15 @@ class SearchApp:
             query = {key: {'$ne': value}}
         else:
             print("Некорректное сравнение")
-
-        self.show_documents(query)
+        if len(keys) > 1:
+            self.show_documents({keys[0]: {"$elemMatch": query}})
+        else:
+            self.show_documents(query)
 
 
 # Запуск оконного приложения
 root = Tk()
 root.geometry('800x600')
 root.title("Football Data Search App")
-search_app = SearchApp(root)
+search_app = MongoWindow(root)
 root.mainloop()

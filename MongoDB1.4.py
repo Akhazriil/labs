@@ -14,7 +14,7 @@ collections_names = ['Футбольные команды', 'Игры']
 
 
 # Оконное приложение для агрегации данных
-class AggregationApp:
+class MongoWindow:
     def __init__(self, master):
         self.master = master
         self.master.title("Лабораторная по Монго №1.4")
@@ -83,7 +83,7 @@ class AggregationApp:
 # ]
 
 root = Tk()
-aggregation_app = AggregationApp(root)
+aggregation_app = MongoWindow(root)
 root.geometry('800x600')
 
 root.mainloop()
